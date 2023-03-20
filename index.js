@@ -5,7 +5,7 @@ const { createClient } = require("pexels");
 const fs = require("fs");
 const getArg = require("./utils/getArg");
 const { default: axios } = require("axios");
-require('dotenv').config()
+require("dotenv").config();
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const bot = new Telegraf(BOT_TOKEN);
@@ -53,9 +53,9 @@ bot.command("pex", (ctx) => {
   const arg = getArg(ctx.message.text);
   if (arg === "noArg") return ctx.reply("No Argument Found");
 
-  if (ctx.photos.total_results === 0)
-    return ctx.reply("No Image found in this topic");
   client.photos.search({ query: arg, per_page: 7 }).then((photos) => {
+    if (photos.total_results === 0)
+      return ctx.reply("No Image found in this topic");
     const medias = photos.photos.map((item) => {
       return {
         type: "photo",
